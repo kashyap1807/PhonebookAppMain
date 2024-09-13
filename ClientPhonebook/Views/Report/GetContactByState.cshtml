@@ -1,0 +1,165 @@
+﻿@using ClientPhonebook.ViewModel
+@model List<GetContactByStateViewModel>
+
+
+<div class="container">
+    
+    <h1 class="text-center my-4">AllContactsByState</h1>
+    <br>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="CountryId" class="form-label"><i class="fa fa-globe"></i> Country</label>
+            <select id="CountryId" onchange="LoadStates();" class="form-select" asp-items="@(new SelectList(ViewBag.Countries, "CountryId", "CountryName"))">
+                <option value="" selected="true" disabled="disabled">-- Select Country --</option>
+            </select>
+            @* <span asp-validation-for="CountryId" class="text-danger"></span> *@
+        </div>
+
+        <div class="col-md-6">
+            <label class="StateId" class="form-label"><i class="fa fa-map-marker"></i> State</label>
+            <select id="StateId" onchange="LoadContacts();" class="form-select">
+                <option value="" selected="true" disabled="disabled">-- Select State --</option>
+            </select>
+            @* <span asp-validation-for="StateId" class="text-danger"></span> *@
+        </div>
+    </div>
+
+
+    <!-- Table -->
+    <div >
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Favourite</th>
+                    <th>Image</th>
+                    <th>First Name </th>
+                    <th>Last Name</th>
+                    <th>Contact Number</th>
+                    <th>Country</th>
+                    <th>State</th>
+
+
+                </tr>
+            </thead>
+            @if (Model == null)
+            {
+                <tbody>
+                <td colspan="7" class="text-center">
+                    No Record Found!
+                </td>
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            
+                                @if (c.Image != null)
+                                {
+                                    var base64 = Convert.ToBase64String(c.Image);
+                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                    <td>
+                                        <img src="@imgSrc" alt="Category img" width="100" height="100" class="rounded-circle" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <img src="@Url.Content("~/Uploads/" +"defaultImg.jpg")" alt="Category img" width="100" height="100" class="rounded-circle" />
+                                    </td>
+                                }
+                            
+                            
+                                @if (c.IsFavourite == true)
+                                {
+
+                                    <td>
+                                        <img src="@Url.Content("~/Uploads/" +"fullstar.png")" alt="Favourite img" width="50" height="50" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <img src="@Url.Content("~/Uploads/" +"unstar.png")" alt="Favourite img" width="50" height="50" />
+                                    </td>
+                                }
+                            
+                            <td>@c.FirstName</td>
+                            <td>@c.LastName</td>
+                            <td>@c.ContactNumber</td>
+                            <td>@c.CountryName</td>
+                            <td>@c.StateName</td>
+                        </tr>
+                    }
+
+                </tbody>
+            }
+           
+        </table>
+    </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function LoadContacts() {
+        var countryId = $('#CountryId').val();
+        var stateId = $('#StateId').val();
+        window.location.href = '/report/GetContactByState?stateId=' + stateId;
+    }
+    function LoadStates() {
+        var countryId = $('#CountryId').val();
+
+        // Setting placeholder option
+        if (countryId == '') {            
+            $('#StateId').empty();
+            $('#StateId').append(`<option value="">-- Select State --</option>`)
+            return;
+        }
+        $.ajax({
+            url: "http://localhost:5116/api/State/GetStateByCountryId/" + countryId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#StateId').empty();
+                    $('#StateId').append(` <option value="">-- Select State --</option> `)
+                    response.data.forEach(function (position) {
+                        $('#StateId').append(` <option value="${position.stateId}">${position.stateName}</option>`)
+                    })
+                }
+            },
+            error: function (xhr, status, error) {
+                // Check if there is a responseText available
+                if (xhr.responseText) {
+                    try {
+                        // Parse the responseText into a JavaScript object
+                        var errorResponse = JSON.parse(xhr.responseText);
+
+                        // Check the properties of the errorResponse object
+                        if (errorResponse && errorResponse.message) {
+                            // Display the error message to the user
+                            alert('Error: ' + errorResponse.message);
+                        } else {
+                            // Display a generic error message
+                            alert('An error occurred. Please try again. ');
+                        }
+
+                    } catch (parseError) {
+                        console.error('Error parsing response:', parseError);
+                        alert('An error occurred. Please try again. ');
+                    }
+                } else {
+                    // Display a generic error message if no responseText is available
+                    alert('An unexpected error occurred. Please try again. ');
+                }
+            },
+            complete: function () {
+            }
+        })
+    }
+
+</script>

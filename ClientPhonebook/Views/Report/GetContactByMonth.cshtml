@@ -1,0 +1,117 @@
+﻿@using ClientPhonebook.ViewModel
+@model List<GetContactByMonthViewModel>
+
+
+<div class="container">
+    <h1 class="text-center my-4">AllContactsByMonth</h1>
+    <br>
+    <div class="row mb-3">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="monthDropdown"><i class="fa-solid fa-calendar-week"></i> <b> Month</b></label>
+            <select id="month" onchange="selectMonth()" class="form-control" class="form-select">
+                <option value=0 selected="true" disabled="disabled">--Select Month--</option>
+                <option value=1>January</option>
+                <option value=2>February</option>
+                <option value=3>March</option>
+                <option value=4>April</option>
+                <option value=5>May</option>
+                <option value=6>June</option>
+                <option value=7>July</option>
+                <option value=8>August</option>
+                <option value=9>September</option>
+                <option value=10>October</option>
+                <option value=11>November</option>
+                <option value=12>December</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+        </div>
+
+    </div>
+    <br>
+    <!-- Table -->
+    <div *ngIf="contactbymonth && selectedMonth else noData">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Favourite</th>
+                    <th>Image</th>
+                    <th>First Name </th>
+                    <th>Last Name</th>
+                    <th>Contact Number</th>
+                    <th>Birth Date</th>
+
+                </tr>
+            </thead>
+
+            @if (Model == null)
+            {
+                <tbody>
+                <td colspan="7" class="text-center">
+                    No Record Found!
+                </td>
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+
+                            @if (c.IsFavourite == true)
+                            {
+
+                                <td>
+                                    <img src="@Url.Content("~/Uploads/" +"fullstar.png")" alt="Favourite img" width="50" height="50" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <img src="@Url.Content("~/Uploads/" +"unstar.png")" alt="Favourite img" width="50" height="50" />
+                                </td>
+                            }
+                            @if (c.Image != null)
+                            {
+                                var base64 = Convert.ToBase64String(c.Image);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                <td>
+                                    <img src="@imgSrc" alt="Category img" width="100" height="100" class="rounded-circle" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <img src="@Url.Content("~/Uploads/" +"defaultImg.jpg")" alt="Category img" width="100" height="100" class="rounded-circle" />
+                                </td>
+                            }
+
+
+                            
+
+                            <td>@c.FirstName</td>
+                            <td>@c.LastName</td>
+                            <td>@c.ContactNumber</td>
+                            <td>@c.BirthDate.ToString("MM/dd/yyyy")</td>
+                            
+                        </tr>
+                    }
+                </tbody>
+            }
+            
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function selectMonth() {
+        var month = document.getElementById('month').value;
+        var result = parseInt(month);
+        window.location.href = "/Report/GetContactByMonth?month=" + result;
+    }
+</script>

@@ -1,0 +1,89 @@
+<div class="container">
+  <h2 class="custom-heading text-center">SIGN UP</h2>
+  <br>
+  <div *ngIf="loading" class="loader-overlay">
+    <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+  </div>
+  <div class="position-relative">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <form #signUpForm="ngForm" class="needs-validation" (ngSubmit)="onSubmit(signUpForm)" novalidate>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="firstName"><i class="fa-solid fa-signature"></i> First name</label>
+                  <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="user.firstName" required minlength="2">
+                  <div *ngIf="signUpForm.controls['firstName']?.invalid && signUpForm.controls['firstName']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['firstName']?.errors?.['required']">First name is required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['firstName']?.errors?.['minlength']">First name must be at least 2 characters long.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="lastName"><i class="fa-solid fa-signature"></i> Last name</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName" required minlength="2">
+                  <div *ngIf="signUpForm.controls['lastName']?.invalid && signUpForm.controls['lastName']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['lastName']?.errors?.['required']">Last name is required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['lastName']?.errors?.['minlength']">Last name must be at least 2 characters long.</small>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label" for="loginId"><i class="fa fa-id-badge" aria-hidden="true"></i> Login id</label>
+                <input type="text" class="form-control" id="loginId" name="loginId" [(ngModel)]="user.loginId" required minlength="2">
+                <div *ngIf="signUpForm.controls['loginId']?.invalid && signUpForm.controls['loginId']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['loginId']?.errors?.['required']">Login id is required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['loginId']?.errors?.['minlength']">Login id must be at least 2 characters long.</small>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="email"><i class="fa fa-envelope"></i> Email</label>
+                <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required email>
+                <div *ngIf="signUpForm.controls['email']?.invalid && signUpForm.controls['email']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['email']?.errors?.['required']">Email is required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['email']?.errors?.['email']">Invalid email format.</small>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="password" class="form-label"><i class="fa fa-key"></i> Password</label>
+                  <input type="password" id="password" name="password" class="form-control" [(ngModel)]="user.password" required minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{8,}$">
+                  <div *ngIf="signUpForm.controls['password']?.invalid && signUpForm.controls['password']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['required']">Password is required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['minlength']">Password must be at least 8 characters long.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['pattern']">Password must be alphanumeric and contain at least one special character.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="confirmPassword" class="form-label"><i class="fa-solid fa-lock"></i> Confirm password</label>
+                  <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" [(ngModel)]="user.confirmPassword" (input)="checkPasswords(signUpForm)" required>
+                  <div *ngIf="signUpForm.controls['confirmPassword']?.invalid && signUpForm.controls['confirmPassword']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['confirmPassword']?.errors?.['required']">Confirm password is required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['confirmPassword']?.errors?.['passwordMismatch']">Passwords do not match.</small>
+                  </div>
+                </div>
+              </div>
+             
+              <div class="mb-3">
+                <label class="form-label" for="contactNumber"><i class="fa fa-phone-square"></i> Contact</label>
+                <input type="text" class="form-control" id="contactNumber" name="contactNumber" [(ngModel)]="user.contactNumber" required pattern="^\+?\d{10,13}$">
+                <div *ngIf="signUpForm.controls['contactNumber']?.invalid && signUpForm.controls['contactNumber']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['contactNumber']?.errors?.['required']">Contact number is required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['contactNumber']?.errors?.['pattern']">Invalid contact number format.</small>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-danger me-2" [routerLink]="['/']" routerLinkActive="router-link-active"><i class="fas fa-arrow-left"></i></button>
+                <button type="submit" class="btn btn-primary btn-block me-2" [disabled]="signUpForm.invalid">SIGN UP</button>
+                <button type="button" class="btn btn-outline-success" [routerLink]="['/signin']" routerLinkActive="router-link-active">SignIn</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

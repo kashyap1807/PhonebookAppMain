@@ -1,0 +1,42 @@
+<div class="container">
+    <h2 class="custom-heading text-center">SIGN IN</h2>
+    <br>
+    <div *ngIf="loading" class="loader-overlay">
+        <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+    <div class="position-relative">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form (ngSubmit)="login()" #loginForm="ngForm">
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="username"><i class="fa fa-user"></i> Username</label>
+                                <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username"
+                                    required #usernameInput="ngModel">
+                                <div *ngIf="usernameInput.touched && usernameInput.errors?.['required']" class="text-danger">
+                                    Username is required.
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="password"><i class="fa fa-key"></i> Password</label>
+                                <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password"
+                                    required #passwordInput="ngModel">
+                                <div *ngIf="passwordInput.touched && passwordInput.errors?.['required']" class="text-danger">
+                                    Password is required.
+                                </div>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="!loginForm.valid">SIGN IN</button>
+                            <div class="d-flex justify-content-between">
+                                <!-- <button type="button" class="btn btn-danger me-3" [routerLink]="['/']" routerLinkActive="router-link-active">Cancel</button> -->
+                                <button type="button" class="btn btn-outline-warning me-3" [routerLink]="['/forgetpassword']" routerLinkActive="router-link-active">Forget Password?</button>
+                                <button type="button" class="btn btn-outline-success" [routerLink]="['/signup']" routerLinkActive="router-link-active">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

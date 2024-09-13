@@ -1,0 +1,131 @@
+
+
+<h1 class="text-center my-4"><i class="fa-sharp fa-solid fa-phone"></i>ontacts</h1>
+
+<div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <img src="assets/loaderImage.gif" alt="loading" />
+</div>
+
+<div class="container row mb-4">
+    <div class="col-md-10">
+        <div class="input-group">
+            <input type="search" class="form-control" placeholder="Search by Name & Contact "  [(ngModel)]="searchString" (keyup)="loadContacts(searchString, 1, sortName, showFavourite)">
+        
+        </div>
+    </div>
+    <!-- <div class="col-md-2 text-center">
+        
+        <a class="btn btn-outline-success me-2" [routerLink]="['/contact/addcontact']" routerLinkActive="router-link-active">
+            <i class="fa fa-user-plus"></i>
+        </a>
+        <a class="btn btn-outline-success btn-sm" [routerLink]="['/contact/addcontactrf']" routerLinkActive="router-link-active" >Add rf</a>
+        
+    </div> -->
+    <div class="col-md-2 text-center">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user-plus"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" [routerLink]="['/contact/addcontact']" routerLinkActive="router-link-active">
+                        TF
+                    </a>
+                </li>
+                <!-- <li>
+                    <a class="dropdown-item" [routerLink]="['/contact/addcontactrf']" routerLinkActive="router-link-active">
+                        RF
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="!loading" class="container">
+    
+
+    <div class="btn-group mb-3">
+        <button class="btn btn-outline-warning me-1" (click)="loadContacts(searchString,1,sortName,!showFavourite)" [class.active]="showFavourite === true">
+            <i class="fa fa-star"></i> Fav
+        </button>
+        <div *ngFor="let item of searchArray">
+            <button class="btn btn-outline-dark me-1" (click)="loadContacts(item, 1,sortName,showFavourite)" [class.active]="searchString === item">{{item}}</button>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th >Favourite</th>
+                <th >Image</th>
+                <th (click)="toggleSort()" style="cursor: pointer;">First Name <i class="fas fa-sort"></i></th>
+                <th >Last Name</th>
+                <th >Contact Number</th>
+                <th >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="!loading && (!contacts || contacts.length === 0)">
+                <td colspan="6" class="text-center">No contacts found!</td>
+            </tr>
+            <tr *ngIf="!loading && (contacts?.length == 0)">
+                <td colspan="7" class="text-center">No Favourites found !</td>
+            </tr>
+            <tr *ngFor="let contact of contacts" (click)="goToDetails(contact.contactId)" style="cursor: pointer;">
+                <td >
+                    <img *ngIf="contact.isFavourite" src="assets/fullstar.png" alt="star img" width="30" height="30">
+                    <img *ngIf="!contact.isFavourite" src="assets/unstar.png" alt="star img" width="30" height="30">
+
+                </td>
+                <td >
+                    <img *ngIf="contact.imageBytes" [src]="'data:image/jpeg;base64,' + contact.imageBytes" alt="img" width="60" height="60" class="rounded-circle">
+                    <img *ngIf="!contact.imageBytes" src="assets/defaultImg.jpg" alt="Category img" width="60" height="60" class="rounded-circle">
+                </td>
+                <td >{{contact.firstName}}</td>
+                <td >{{contact.lastName}}</td>
+                <td >{{contact.contactNumber}}</td>
+                <td >
+                    <a class="btn btn-outline-dark  me-2" [routerLink]="['/contact/updatecontact/',contact.contactId]" (click)="$event.stopPropagation()" routerLinkActive="router-link-active">
+                        <i class="fa fa-pen"></i>
+                    </a>
+                    <!-- <a class="btn btn-otline-dark btn-sm" [routerLink]="['/contact/updatecontactrf/',contact.contactId]" routerLinkActive="router-link-active" >rf</a> -->
+                    <a class="btn btn-outline-dark me-2" [routerLink]="['/contact/contactdetails/',contact.contactId]" (click)="$event.stopPropagation()" routerLinkActive="router-link-active">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                    <button class="btn btn-outline-danger " (click)="confirmDelete(contact.contactId); $event.stopPropagation()">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mb-3 align-items-center">
+        <div class="col-sm-1">
+            <label for="pageSize" class="form-label">Page Size:</label>
+            <select id="pageSize" class="form-select" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="4">4</option>
+                <option [ngValue]="6">6</option>
+            </select>
+        </div>
+        <div class="col-sm-10 d-flex justify-content-center">
+            <ul class="pagination mb-0">
+                <li class="page-item">
+                    <button class="page-link" (click)="previousPage()" [disabled]="pageNumber === 1">Previous</button>
+                </li>
+                <li *ngFor="let i of [].constructor(totalPages); let index = index" class="page-item" [class.active]="pageNumber === index + 1">
+                    <button class="page-link" (click)="changePage(index + 1)">{{ index + 1 }}</button>
+                </li>
+                <li class="page-item">
+                    <button class="page-link" (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+</div>

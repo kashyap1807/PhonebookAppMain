@@ -1,0 +1,51 @@
+<div class="container">
+    <h2 class="custom-heading">Contact Details</h2>
+    <br>
+    <br>
+    <div class="row justify-content-center">
+        <!-- upper Side (Images) -->
+        <div class="col-md-5">
+            <div class="card mb-3 shadow">
+                <div class="card-header">
+                    <h5 class="card-title font-weight-bold">&nbsp;<b>{{contact.firstName}}&nbsp;{{contact.lastName}}</b></h5>
+                    <hr>
+                    <br>
+                    <div class="d-flex justify-content-between align-items-center">
+                        
+                        <td  *ngIf="contact.imageBytes == null "><img src="assets/defaultImg.jpg" alt="Category img" width="100" height="100" class="rounded-circle"/></td>
+                        <td *ngIf="contact.imageBytes != null "><img [src]="'data:image/jpeg;base64,'+ contact.imageBytes" alt="img" width="100" height="100" class="rounded-circle"/></td>
+                        
+                        <img *ngIf="contact.isFavourite" src="assets/fullstar.png" alt="star img" width="50" height="50" style="cursor: pointer;" (click)="onStarClick()"> 
+                        <img *ngIf="!contact.isFavourite" src="assets/unstar.png" alt="star img" width="50" height="50" style="cursor: pointer;" (click)="onStarClick()"> 
+                       
+                    </div>
+                    
+                    <br>
+                </div>
+            </div>
+        
+
+        <!-- lower Side (Content) -->
+        
+            <div class="card mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-phone-square"></i><b> Contact:</b>  {{contact.contactNumber}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-envelope" ></i><b> Email:</b>  {{contact.email}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-building" ></i> <b> Company:</b> {{contact.company}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa-regular fa-user"></i><b> Gender:</b> {{contact.gender == 'M' ? 'Male' : 'Female'}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-birthday-cake"></i><b> Birth Date:</b> {{contact.birthDate | date:'MM-dd-yyyy'}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-globe" ></i><b> Country Name:</b> {{contact.country.countryName}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-map-marker"></i><b> State Name:</b> {{contact.state.stateName}}</h5>
+
+                </div>
+            </div>
+            
+
+                <button class="btn btn-secondary btn-block" [routerLink]="['/contact']" routerLinkActive="router-link-active">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </button>
+            
+            
+        </div>
+    </div>
+</div>

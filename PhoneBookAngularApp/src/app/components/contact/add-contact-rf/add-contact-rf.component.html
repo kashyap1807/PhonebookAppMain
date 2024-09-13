@@ -1,0 +1,160 @@
+<div class="continer">
+    <h2 class="row justify-content-center">Add Product (RF)</h2>
+    <div *ngIf="loading" class="loader-overlay">
+        <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="countryId" class="form-label">Country:</label>
+                                <select class="form-control" id="countryId" formControlName="countryId">
+                                    <option value=0>--Select Country--</option>
+                                    <option *ngFor="let country of countries" [value]="country.countryId">{{country.countryName}}</option>
+                                </select>
+                                <div *ngIf="formControls['countryId'].invalid && formControls['countryId'].touched">
+                                    <small class="text-danger" *ngIf="formControls['countryId'].errors?.['required'] || formControls['countryId'].errors?.['invalidCountry']">
+                                        country is required.
+                                    </small>
+                                </div>
+                            </div>
+            
+            
+                            <div class="col-md-6">
+                                <label for="stateId" class="form-label">State:</label>
+                                <select class="form-control" id="stateId" formControlName="stateId">
+                                    <option value=0>--Select State--</option>
+                                    <option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</option>
+                                </select>
+                                <div *ngIf="formControls['stateId'].invalid && formControls['stateId'].touched">
+                                    <small class="text-danger" *ngIf="formControls['stateId'].errors?.['required'] || formControls['stateId'].errors?.['invalidState']">
+                                        state is required.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First name:</label>
+                                <input type="text" class="form-control" id="firstName" formControlName="firstName">
+                                <div *ngIf="formControls['firstName'].invalid && formControls['firstName'].touched">
+                                    <small class="text-danger" *ngIf="formControls['firstName'].errors?.['required']">
+                                        first name is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="formControls['firstName'].errors?.['minLength']">
+                                        first name must be at least 3 characters long.
+                                    </small>
+                                </div>
+                            </div>
+            
+            
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last name:</label>
+                                <input type="text" class="form-control" id="lastName" formControlName="lastName">
+                                <div *ngIf="formControls['lastName'].invalid && formControls['lastName'].touched">
+                                    <small class="text-danger" *ngIf="formControls['lastName'].errors?.['required']">
+                                        last name is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="formControls['lastName'].errors?.['minLength']">
+                                        last name must be at least 3 characters long.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+        
+        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" formControlName="email">
+                            <div *ngIf="formControls['email'].invalid && formControls['email'].touched">
+                                <small class="text-danger" *ngIf="formControls['email'].errors?.['required']">
+                                    email is required.
+                                </small>
+                                <small class="text-danger" *ngIf="formControls['email'].errors?.['email']">
+                                    email is invalid.
+                                </small>
+                            </div>
+                        </div>
+        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="company" class="form-label">Company name:</label>
+                                <input type="text" class="form-control" id="company" formControlName="company">
+                                <div *ngIf="formControls['company'].invalid && formControls['company'].touched">
+                                    <small class="text-danger" *ngIf="formControls['company'].errors?.['required']">
+                                        company is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="formControls['company'].errors?.['minLength']">
+                                        company must be at least 3 characters long.
+                                    </small>
+                                </div>
+                            </div>
+            
+                            <div class="col-md-6">
+                                <label for="contactNumber" class="form-label">Contact Number:</label>
+                                <input type="text" class="form-control" id="contactNumber" formControlName="contactNumber">
+                                <div *ngIf="formControls['contactNumber'].invalid && formControls['contactNumber'].touched">
+                                    <small class="text-danger" *ngIf="formControls['contactNumber'].errors?.['required']">
+                                        contactNumber is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="formControls['contactNumber'].errors?.['minLength']">
+                                        contactNumber must be less than 10.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+        
+        
+                        <div class="mb-3">
+                            <label for="fileName" class="form-label">Image:</label>
+                            <input class="form-control" type="file" id="fileName" name="fileName" formControlName="Image" (change)="handleFileInput($event)">
+                            
+                        </div>
+        
+        
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender:</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" id="genderM" value="M" formControlName="gender">
+                                    <label for="genderM" class="form-label">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" id="genderF" value="F" formControlName="gender">
+                                    <label for="genderF" class="form-label">Female</label>
+                                </div>
+                                <div *ngIf="formControls['gender'].invalid && formControls['gender'].touched">
+                                    <small class="text-danger" *ngIf="formControls['gender'].errors?.['required']">
+                                        gender is required.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+        
+        
+                        <div class="mb-3">
+                            <input type="checkbox" class="form-check-input" id="isFavourite" formControlName="isFavourite">
+                            <label for="isFavourite" class="form-label">isFavourite</label>
+                        </div>
+        
+        
+                        <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid">Add Contact</button>|
+                        <button type="button" class="btn btn-danger" [routerLink]="['/contact']" routerLinkActive="router-link-active" >Cancel</button>
+        
+        
+                    </form>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</div>

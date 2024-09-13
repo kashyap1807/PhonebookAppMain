@@ -1,0 +1,218 @@
+﻿@using ClientPhonebook.ViewModel
+@model List<ContactViewModel>
+
+<br />
+<h1 class="text-center"><i class="fa-sharp fa-solid fa-phone"></i>ontacts</h1>
+<br />
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-10">
+            <input type="search" placeholder="Search by Name & Contact" class="form-control" id="searchbox" onsearch="changePage(1, @ViewBag.pageSize, this.value, '@ViewBag.sort_name', '@ViewBag.show_favourites')" />
+
+        </div>
+        <div class="col-md-2 text-center">
+            <a asp-action="Create" class="btn btn-outline-success"><i class="fa fa-user-plus"></i></a>
+
+        </div>
+
+    </div>
+
+
+    
+    <form method="get">
+        <div class=" mb-3">
+
+            <a onclick="changePage(1, @ViewBag.pageSize, '@ViewBag.search_string', '@ViewBag.sort_name', '!@ViewBag.show_favourites')"
+               class="btn btn-outline-warning @(ViewBag.show_favourites == true ? "active" : "")">
+                <i class="fa fa-star"></i> Fav
+            </a>
+
+            <a onclick="changePage(1, @ViewBag.pageSize, '', '@ViewBag.sort_name', '@ViewBag.show_favourites')"
+               class="btn btn-outline-dark ">
+                All
+            </a>
+            @for (char ch = 'A'; ch <= 'Z'; ch++)
+            {
+
+                <a onclick="changePage(1, @ViewBag.pageSize, '@ch', '@ViewBag.sort_name', '@ViewBag.show_favourites')"
+                   class="btn btn-outline-dark">
+                    @ch
+                </a>
+            }
+
+        </div>
+        
+
+    </form>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Favourite </th>
+                <th>Image </th>
+                <th id="firstNameHeader" style="cursor: pointer">First Name <i class="fas fa-sort"></i></th>
+                <th>Last Name </th>
+                <th>Contact Number </th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        @if (Model == null || Model.Count == 0)
+        {
+            <tbody>
+            <td colspan="6" class="text-center">
+                No Record Found!
+            </td>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr data-href="@Url.Action("Details", new { id = c.contactId })" style="cursor: pointer;">
+                        @if (c.IsFavourite == true)
+                        {
+
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"fullstar.png")" alt="Favourite img" width="30" height="30" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"unstar.png")" alt="Favourite img" width="30" height="30" />
+                            </td>
+                        }
+
+                        @if (c.ImageBytes != null)
+                        {
+                            var base64 = Convert.ToBase64String(c.ImageBytes);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <td>
+                                <img src="@imgSrc" alt="Category img" width="60" height="60" class="rounded-circle" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"defaultImg.jpg")" alt="Category img" width="60" height="60" class="rounded-circle" />
+                            </td>
+                        }
+
+
+                        <td>@c.FirstName</td>
+                        <td>@c.LastName</td>
+                        <td>@c.ContactNumber</td>
+
+
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@c.contactId" class="btn btn-outline-dark"><i class="fa fa-pen"></i></a>
+                            <a asp-action="Details" asp-route-id="@c.contactId" class="btn btn-outline-dark"><i class="fa fa-eye"></i></a>
+                            <a asp-action="Delete" asp-route-id="@c.contactId" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+
+    </table>
+
+
+    <br />
+    <!-- Pagination -->
+    <div>
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <!-- Page size dropdown -->
+                <label for="pageSize" class="form-label">Page Size:</label>
+                <select id="pageSize" value="@ViewBag.PageSize"  onchange="changePage(1, this.value,'@ViewBag.search_string', '@ViewBag.sort_name', '@ViewBag.show_favourites')">
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="col-md-5">
+                <ul class="pagination">
+                    <!-- Previous Button -->
+                    <li class="page-item @(ViewBag.page == 1 ? "disabled" : "")">
+                        <a class="page-link" href="/Contact/Index?page=@(ViewBag.page - 1)&pageSize=@ViewBag.pageSize&search_string=@ViewBag.search_string&sort_name=@ViewBag.sort_name&show_favourites=@ViewBag.show_favourites">Previous</a>
+                    </li>
+                    <!-- Page Numbers -->
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.page ? "active" : "")">
+                            <a class="page-link" href="/Contact/Index?page=@i&pageSize=@ViewBag.pageSize&search_string=@ViewBag.search_string&sort_name=@ViewBag.sort_name&show_favourites=@ViewBag.show_favourites">@i</a>
+                        </li>
+                    }
+                    <!-- Next Button -->
+                    <li class="page-item @(ViewBag.page == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="/Contact/Index?page=@(ViewBag.page + 1)&pageSize=@ViewBag.pageSize&search_string=@ViewBag.search_string&sort_name=@ViewBag.sort_name&show_favourites=@ViewBag.show_favourites">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <br />
+
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentPageSize = @(ViewBag.PageSize); // Get current page size from ViewBag
+        var pageSizeDropdown = document.getElementById("pageSize");
+        // Set selected option based on current page size
+        for (var i = 0; i < pageSizeDropdown.options.length; i++) {
+            if (pageSizeDropdown.options[i].value === currentPageSize.toString()) {
+                pageSizeDropdown.selectedIndex = i;
+                break;
+            }
+        }
+
+        var rows = document.querySelectorAll('tr[data-href]');
+        rows.forEach(function (row) {
+            row.addEventListener('click', function () {
+                window.location.href = row.getAttribute('data-href');
+            });
+        });
+    });
+    document.getElementById("firstNameHeader").addEventListener("click", function ChangeSortDirection() {
+        var sort_name = "@ViewBag.sort_name";
+        console.log(sort_name);
+        if (sort_name == 'default') {
+            var sort_name = 'asc';
+        }
+        else if (sort_name == 'asc') {
+            sort_name = 'desc';
+        }
+        else if (sort_name = 'desc') {
+            sort_name = 'default';
+        }
+
+        changePage(@ViewBag.page, @ViewBag.pageSize, '@ViewBag.search_string', sort_name, '@ViewBag.show_favourites');
+    })
+
+    function changePage(page, pageSize, search_string, sort_name, show_favourites) {
+        if (show_favourites == '!False') {
+            show_favourites = true;
+
+            
+        }
+        if (show_favourites == '!True') {
+            show_favourites = false;
+        }
+        console.log(show_favourites);
+        window.location.href = "/Contact/Index"
+            + "?page=" + page
+            + "&pageSize=" + pageSize
+            + "&search_string=" + search_string
+            + "&sort_name=" + sort_name
+            + "&show_favourites=" + show_favourites;
+    }
+
+</script>

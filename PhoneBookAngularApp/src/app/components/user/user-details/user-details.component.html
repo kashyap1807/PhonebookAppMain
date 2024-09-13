@@ -1,0 +1,40 @@
+<div class="container">
+    <br>
+    <h2 class="custom-heading">User Details</h2>
+    <br>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card mb-3 shadow">
+                <div class="card-header">
+                    <h5 class="card-title font-weight-bold">
+                        <b>{{user.firstName}}&nbsp;{{user.lastName}}</b>
+                    </h5>
+                </div>
+            </div>
+            <div class="card mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-id-badge" ></i> Login Id: {{user.loginId}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-envelope" ></i> Email: {{user.email}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-phone-square"></i> Contact: {{user.contactNumber}}</h5>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-secondary mt-3 " [routerLink]="['/contact']" routerLinkActive="router-link-active">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary mt-3 " [routerLink]="['/updateuser/',username]" routerLinkActive="router-link-active">
+                     Edit User
+                </button>
+    
+                <button class="btn btn-success mt-3 " [routerLink]="['/changepassword/',username]" routerLinkActive="router-link-active">
+                    ChangePassword
+               </button>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>

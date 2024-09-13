@@ -1,0 +1,179 @@
+﻿@using ClientPhonebook.ViewModel
+@model UpdateContactViewModel
+
+
+<div class="container">
+    <h2 class="custom-heading text-center">Update Contact</h2>
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="contactId" />
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="CountryId" class="form-label"><i class="fa fa-globe"></i> Country</label>
+                                <select asp-for="CountryId" onchange="LoadStates();" class="form-select" asp-items="@(new SelectList(ViewBag.Countries, "CountryId", "CountryName"))">
+                                    <option value="">-- Select Country --</option>
+                                </select>
+                                <span asp-validation-for="CountryId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="StateId" class="form-label"><i class="fa fa-map-marker"></i> State</label>
+                                <select asp-for="StateId" class="form-select">
+                                    <option value="">-- Select State --</option>
+                                </select>
+                                <span asp-validation-for="StateId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label"><i class="fa-solid fa-signature"></i> First name</label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label">Last name</label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label"><i class="fa fa-envelope"></i> Email</label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="BirthDate" class="form-lable"><i class="fas fa-birthday-cake"></i> BirthDate</label>
+                                <input asp-for="BirthDate" type="date" class="form-control" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Company" class="form-label"><i class="fa fa-building"></i> Company</label>
+                                <input asp-for="Company" class="form-control" />
+                                <span asp-validation-for="Company" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ContactNumber" class="form-label"><i class="fa fa-phone-square"></i> Contact</label>
+                                <input asp-for="ContactNumber" class="form-control" />
+                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Image" class="form-label"><i class="fa-solid fa-image"></i> Image</label>
+                            <input asp-for="Image" type="file" class="form-control" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Gender" class="form-label">Gender</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="Gender" value="M" id="GenderTrue" />
+                                    <label class="form-check-label" for="Gender"><i class="fa fa-mars"></i> Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="Gender" value="F" id="GenderFalse" />
+                                    <label class="form-check-label" for="Gender"><i class="fa fa-venus"></i> Female</label>
+                                </div>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="IsFavourite" class="form-label"><i class="fa fa-star"></i> Favourite</label>
+                                <input asp-for="IsFavourite" type="checkbox" />
+                                
+                                <span asp-validation-for="IsFavourite" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            @* <input type="hidden" asp-for="FileName" /> *@
+                            <a asp-action="Index" class="btn btn-outline-danger me-3"><i class="fas fa-arrow-left"></i></a>
+                            <input type="submit" value="Edit" class="btn btn-primary btn-block" />
+                        </div>
+                    </form>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let stateId = @ViewBag.StateId;
+    $(document).ready(function () {
+        LoadStates();
+    });
+    function LoadStates() {
+        var countryId = $('#CountryId').val();
+
+        // Setting placeholder option
+        if (countryId == '') {
+            $('#StateId').empty();
+            $('#StateId').append(`
+        <option value="">-- Select State --</option>
+                                                `)
+            return;
+        }
+        $.ajax({
+            url: "http://localhost:5116/api/State/GetStateByCountryId/" + countryId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#StateId').empty();
+                    response.data.forEach(function (position) {
+                        $('#StateId').append(`
+                        <option value="${position.stateId}">${position.stateName}</option>
+                                            `)
+                    })
+                    if (stateId != -1) {
+                        $('#StateId').val(stateId);
+                        stateId = -1;
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                // Check if there is a responseText available
+                if (xhr.responseText) {
+                    try {
+                        // Parse the responseText into a JavaScript object
+                        var errorResponse = JSON.parse(xhr.responseText);
+
+                        // Check the properties of the errorResponse object
+                        if (errorResponse && errorResponse.message) {
+                            // Display the error message to the user
+                            alert('Error: ' + errorResponse.message);
+                        } else {
+                            // Display a generic error message
+                            alert('An error occurred. Please try again. ');
+                        }
+
+                    } catch (parseError) {
+                        console.error('Error parsing response:', parseError);
+                        alert('An error occurred. Please try again. ');
+                    }
+                } else {
+                    // Display a generic error message if no responseText is available
+                    alert('An unexpected error occurred. Please try again. ');
+                }
+            },
+            complete: function () {
+            }
+        })
+    }
+
+</script>

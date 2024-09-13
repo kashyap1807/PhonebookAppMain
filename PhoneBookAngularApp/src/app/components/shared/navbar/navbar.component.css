@@ -1,0 +1,35 @@
+.navbar {
+    background-color: #f8f9fa; /* Light grey background */
+    box-shadow: 0 4px 2px -2px gray; /* Add a subtle shadow */
+}
+
+.navbar-brand {
+    font-weight: bold; /* Make brand bold */
+    font-size: 1.25rem; /* Increase font size */
+}
+
+.nav-link {
+    font-size: 1rem; /* Standard font size */
+    padding: 0.5rem 1rem; /* Increase padding for better touch target */
+}
+
+.navbar-toggler {
+    border: none; /* Remove border around toggler */
+}
+
+.navbar-toggler-icon {
+    color: #343a40; /* Dark color for toggler icon */
+}
+
+.nav-item .nav-link {
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+
+.nav-item .nav-link .fas {
+    margin-right: 0.5rem; /* Space between icon and text */
+}
+
+.navbar-nav.ml-auto {
+    margin-left: auto; /* Align items to the right */
+}

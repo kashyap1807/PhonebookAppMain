@@ -1,0 +1,40 @@
+﻿@using ClientPhonebook.ViewModel
+@model UserViewModel
+
+<div class="container">
+    <h2 class="custom-heading text-center">User Details</h2>
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-5"> 
+            <div class="card mb-3 shadow">
+                <div class="card-header">
+                    <h5 class="card-title font-weight-bold">
+                        <b>@Model.FirstName &nbsp; @Model.LastName</b>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="card mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-id-badge"></i> Login Id: @Model.LoginId</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-envelope"></i> Email: @Model.Email</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa fa-phone-square"></i> Contact: @Model.ContactNumber</h5>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-outline-danger me-3 " asp-action="Index" asp-controller="Contact">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <a class="btn btn-primary btn-block me-3 " asp-action="UpdateUser" asp-route-id="@Model.LoginId" >
+                    EditUser
+                </a>
+
+                <a class="btn btn-success me-3" asp-action="ChangePassword" asp-route-id="@Model.LoginId">
+                    ChangePassword
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

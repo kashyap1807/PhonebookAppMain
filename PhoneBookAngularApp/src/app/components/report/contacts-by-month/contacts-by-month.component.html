@@ -1,0 +1,67 @@
+<div class="container">
+    <h1 class="text-center my-4">AllContactsByMonth</h1>
+    <br>
+    <div class="row mb-3">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="monthDropdown"><i class="fa-solid fa-calendar-week"></i> <b> Month</b></label>
+            <select id="monthDropdown" class="form-control" class="form-select" [(ngModel)]="selectedMonth" (change)="loadMonths()">
+                <option value=0 disabled>--Select Month--</option>
+                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+            <div *ngIf="(selectedMonth === 0 || selectedMonth == null )" class="text-danger">
+                Please select a month.
+            </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+        
+    </div>
+<br>
+    <!-- Table -->
+    <div *ngIf="contactbymonth && selectedMonth else noData">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th >Favourite</th>
+                    <th >Image</th>
+                    <th >First Name </th>
+                    <th >Last Name</th>
+                    <th >Contact Number</th>
+                    <th>Birth Date</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr *ngFor="let contact of contactbymonth" >
+                    <td >
+                        <img *ngIf="contact.isFavourite" src="assets/fullstar.png" alt="star img" width="30" height="30">
+                        <img *ngIf="!contact.isFavourite" src="assets/unstar.png" alt="star img" width="30" height="30">
+    
+                    </td>
+                    <td >
+                        <img *ngIf="contact.image" [src]="'data:image/jpeg;base64,' + contact.image" alt="img" width="60" height="60" class="rounded-circle">
+                        <img *ngIf="!contact.image" src="assets/defaultImg.jpg" alt="Category img" width="60" height="60" class="rounded-circle">
+                    </td>
+                    <td >{{contact.firstName}}</td>
+                    <td >{{contact.lastName}}</td>
+                    <td >{{contact.contactNumber}}</td>
+                    <td>{{contact.birthDate | date:'MM-dd-yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+
+
+
+    <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="text-center text-danger">
+      <p>No data available for the selected month. </p>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,40 @@
+﻿@model List<Contact>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Contact Id: </th>
+            <th>First Name: </th>
+            <th>Last Name: </th>
+            <th>Email: </th>
+            <th>Company Name: </th>
+            <th>Contact Number: </th>
+            <th>Image: </th>
+
+            <th>Action: </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.contactId</td>
+                <td>@c.FirstName</td>
+                <td>@c.LastName</td>
+                <td>@c.Email</td>
+                <td>@c.Company</td>
+                <td>@c.ContactNumber</td>
+                
+                <td>
+                    <img src="@Url.Content("~/Uploads/" +@c.FileName)" alt="Category img" width="100" height="100" />
+                </td>
+
+                <td>
+                    @* <a asp-action="Edit" asp-route-id="@c.contactId">Edit</a> *@
+                    <a asp-action="Details" asp-route-id="@c.contactId" class="btn btn-info">Details</a>
+                    @* <a asp-action="Delete" asp-route-id="@c.contactId">Delete</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,131 @@
+<div class="container">
+    <h2 class="custom-heading text-center">Add Contact</h2>
+    <br>
+    <div *ngIf="loading" class="loader-overlay">
+        <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form #addContactTfForm="ngForm" class="needs-validation" (ngSubmit)="onSubmit(addContactTfForm)" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="countryId"><i class="fa fa-globe"></i> Country</label>
+                                <select id="countryId" name="countryId" class="form-select" [(ngModel)]="contact.countryId" (change)="loadStateDetails(contact.countryId)" required>
+                                    <option value=0 disabled>--Select Country--</option>
+                                    <option *ngFor="let country of countries" [value]="country.countryId">{{country.countryName}}</option>
+                                </select>
+                                <div *ngIf="(addContactTfForm.controls['countryId']?.invalid || addContactTfForm.controls['countryId']?.value == 0) && addContactTfForm.controls['countryId']?.touched">
+                                    <small class="text-danger">Country is required.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="stateId"><i class="fa fa-map-marker"></i> State</label>
+                                <select id="stateId" name="stateId" class="form-select" [(ngModel)]="contact.stateId" required>
+                                    <option value=0 disabled>--Select State--</option>
+                                    <option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</option>
+                                </select>
+                                <div *ngIf="(addContactTfForm.controls['stateId']?.invalid || addContactTfForm.controls['stateId']?.value == 0) && addContactTfForm.controls['stateId']?.touched">
+                                    <small class="text-danger">State is required.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="firstName"><i class="fa-solid fa-signature"></i> First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="contact.firstName" required minlength="3">
+                                <div *ngIf="addContactTfForm.controls['firstName']?.invalid && addContactTfForm.controls['firstName']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['firstName']?.errors?.['required']">First name is required.</small>
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['firstName']?.errors?.['minlength']">First name must be at least 3 characters.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="lastName"> Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="contact.lastName" required minlength="3">
+                                <div *ngIf="addContactTfForm.controls['lastName']?.invalid && addContactTfForm.controls['lastName']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['lastName']?.errors?.['required']">Last name is required.</small>
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['lastName']?.errors?.['minlength']">Last name must be at least 3 characters.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="email"><i class="fa fa-envelope"></i> Email</label>
+                                <input type="email" class="form-control" id="email" name="email" [(ngModel)]="contact.email" required email>
+                                <div *ngIf="addContactTfForm.controls['email']?.invalid && addContactTfForm.controls['email']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['email']?.errors?.['required']">Email is required.</small>
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['email']?.errors?.['email']">Invalid email format.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="birthDate"><i class="fas fa-birthday-cake"></i> Date of Birth</label>
+                                <input type="date" class="form-control" id="birthDate" name="birthDate" [(ngModel)]="contact.birthDate" [max]="maxDate()">
+                                <div *ngIf="addContactTfForm.controls['birthDate']?.invalid && addContactTfForm.controls['birthDate']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['birthDate']?.errors?.['required']">Date of Birth is required.</small>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="company"><i class="fa fa-building"></i> Company</label>
+                                <input type="text" class="form-control" id="company" name="company" [(ngModel)]="contact.company" required minlength="3">
+                                <div *ngIf="addContactTfForm.controls['company']?.invalid && addContactTfForm.controls['company']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['company']?.errors?.['required']">Company name is required.</small>
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['company']?.errors?.['minlength']">Company name must be at least 3 characters.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="contactNumber"><i class="fa fa-phone-square"></i> Contact</label>
+                                <input type="text" class="form-control" id="contactNumber" name="contactNumber" [(ngModel)]="contact.contactNumber" required maxlength="10">
+                                <div *ngIf="addContactTfForm.controls['contactNumber']?.invalid && addContactTfForm.controls['contactNumber']?.touched">
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['contactNumber']?.errors?.['required']">Contact number is required.</small>
+                                    <small class="text-danger" *ngIf="addContactTfForm.controls['contactNumber']?.errors?.['maxlength']">Contact number must not be more than 10 numbers.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="fileToUpload"><i class="fa-solid fa-image"></i> Image</label>
+                            <input type="file" (change)="handleFileInput($event)" id="fileToUpload" name="fileToUpload" accept="image/png, image/gif, image/jpeg" class="form-control" />
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <div class="form-check">
+                                    <input type="radio" id="male" name="gender" value="M" [(ngModel)]="contact.gender" class="form-check-input" required>
+                                    <label class="form-check-label" for="male"><i class="fa fa-mars"></i> Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="female" name="gender" value="F" [(ngModel)]="contact.gender" class="form-check-input" required>
+                                    <label class="form-check-label" for="female"><i class="fa fa-venus"></i> Female</label>
+                                </div>
+                                <div *ngIf="addContactTfForm.controls['gender']?.invalid && addContactTfForm.controls['gender']?.touched">
+                                    <small class="text-danger">Gender is required.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Favourite</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="isFavourite" name="isFavourite" [(ngModel)]="contact.isFavourite" class="form-check-input">
+                                    <label class="form-check-label" for="isFavourite"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-danger me-2" [routerLink]="['/contact']" routerLinkActive="router-link-active"><i class="fas fa-arrow-left"></i></button>
+                            <button type="submit" [disabled]="addContactTfForm.invalid" class="btn btn-primary btn-block ">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+﻿@using ClientPhonebook.ViewModel
+@model List<ContactViewModel>
+
+<h1 class="text-center">PhoneBook</h1>
+<hr />
+<br />
+<form method="get">
+    <div>
+        <button asp-ac="submit" class="btn btn-secondary" value="">All</button>
+        @for (char ch = 'A'; ch <= 'Z'; ch++)
+        {
+
+            <button type="submit" class="btn btn-outline-secondary" name="ch" value="@ch">@ch</button>
+        }
+        
+    </div>
+    <br />
+    <button asp-action="Index" class="btn btn-outline-primary">All Contacts</button>
+</form>
+<br />
+<hr />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Image </th>
+            <th>First Name </th>
+            <th>Last Name </th>
+            <th>Contact Number </th>
+            <th>Country Name : </th>
+            <th>State Name : </th>
+            <th>Action: </th>
+        </tr>
+    </thead>
+    @if (Model == null || Model.Count == 0)
+    {
+        <tbody>
+        <td>
+            No Record Found
+        </td>
+        </tbody>
+    }
+    else
+    {
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    @if (c.FileName == null || c.FileName == "")
+                    {
+                        <td>
+                            <img src="@Url.Content("~/Uploads/"+"DefaultImg.png" )" alt="Category img" width="100" height="100" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <img src="@Url.Content("~/Uploads/" +@c.FileName)" alt="Category img" width="100" height="100" />
+                        </td>
+                    }
+
+
+                    <td>@c.FirstName</td>
+                    <td>@c.LastName</td>
+                    <td>@c.ContactNumber</td>
+                    <td>@c.Country.CountryName</td>
+                    <td>@c.State.StateName</td>
+
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@c.contactId" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@c.contactId" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@c.contactId" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+
+</table>
+
+
+<br />
+<!-- Pagination -->
+<div>
+    <!-- Page size dropdown -->
+    <label for="pageSize">Page Size:</label>
+    <select id="pageSize" value="@ViewBag.PageSize" onchange="changePageSize(this)">
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+        <!-- Add more options as needed -->
+    </select>
+    <br />
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                <a class="page-link" href="/Contact/Index?ch=@ViewBag.Ch&page=@i&pageSize=@ViewBag.PageSize">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+<br />
+
+
+<a asp-action="Create" class="btn btn-success">Add</a>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentPageSize = @(ViewBag.PageSize); // Get current page size from ViewBag
+        var pageSizeDropdown = document.getElementById("pageSize");
+        // Set selected option based on current page size
+        for (var i = 0; i < pageSizeDropdown.options.length; i++) {
+            if (pageSizeDropdown.options[i].value === currentPageSize.toString()) {
+                pageSizeDropdown.selectedIndex = i;
+                break;
+            }
+        }
+    });
+    function changePageSize(select) {
+        var pageSize = select.value;
+        var currentPage = @(ViewBag.CurrentPage);
+        window.location.href = "/Contact/Index?page=" + 1 + "&pageSize=" + pageSize;
+    }
+</script>

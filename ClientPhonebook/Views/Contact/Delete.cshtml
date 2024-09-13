@@ -1,0 +1,78 @@
+﻿@using ClientPhonebook.ViewModel
+@model ContactViewModel
+
+<div class="container">
+    <h2 class="custom-heading">Delete Contact</h2>
+    <h4 class="text-center">Are you sure you want to delete this contact ?</h4>
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card mb-3 shadow">
+                <div class="card-header">
+                    <h5 class="card-title font-weight-bold">&nbsp;<b>@Model.FirstName &nbsp; @Model.LastName</b></h5>
+                    <hr />
+                    <br />
+                    <div class="d-flex justify-content-between align-items-center">
+                        @if (Model.ImageBytes != null)
+                        {
+                            var base64 = Convert.ToBase64String(Model.ImageBytes);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <td>
+                                <img src="@imgSrc" alt="Category img" width="100" height="100" class="rounded-circle" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"defaultImg.jpg")" alt="Category img" width="100" height="100" class="rounded-circle" />
+                            </td>
+                        }
+                        @if (@Model.IsFavourite == true)
+                        {
+
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"fullstar.png")" alt="Favourite img" width="30" height="30" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img src="@Url.Content("~/Uploads/" +"unstar.png")" alt="Favourite img" width="30" height="30" />
+                            </td>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3 shadow">
+                <div class="card-body">
+                    <h4 class="card-title" style="font-weight: lighter"><i class="fa fa-phone-square"></i> <b>Contact:</b>  @Model.ContactNumber</h4>
+                    <h4 class="card-title" style="font-weight: lighter"><i class="fa fa-envelope"></i> <b>Email:</b>  @Model.Email</h4>
+                    <h4 class="card-title" style="font-weight: lighter"><i class="fa fa-building"></i> <b>Company:</b>  @Model.Company</h4>
+                    <h4 class="card-title" style="font-weight: lighter"><i class="fa fa-globe-asia"></i> <b>Country:</b>  @Model.Country.CountryName</h4>
+                    <h4 class="card-title" style="font-weight: lighter"><i class="fa fa-map-marker"></i> <b>State:</b>  @Model.State.StateName</h4>
+                    <h4 class="card-title" style="font-weight: lighter">
+                        <i class="fa-regular fa-user"></i> <b>Gender:</b>
+                        @if (Model.Gender == "M" || Model.Gender == "m")
+                        {
+                            <td>Male</td>
+                        }
+                        else
+                        {
+                            <td>Female</td>
+                        }
+                    </h4>
+                </div>
+            </div>
+            
+            <form asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" asp-for="contactId" />
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary me-4"><i class="fas fa-arrow-left"></i> </a>
+                    <input type="submit" value="Delete" class="btn btn-danger btn-block" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

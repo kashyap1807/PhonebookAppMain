@@ -1,0 +1,46 @@
+﻿@using ClientPhonebook.ViewModel
+@model List<GetContactByGenderViewModel>
+
+<h1 class="text-center my-4">AllContactsByGender</h1>
+<br>
+<div class="container">
+
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Gender</th>
+                <th>Total Contacts</th>
+
+            </tr>
+        </thead>
+        @if (Model == null)
+        {
+            <tbody>
+                <td colspan="6" class="text-center">
+                    No Record Found!
+                </td>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+
+                        <td>@c.Gender</td>
+                        <td>@c.TotalContact</td>
+
+                    </tr>
+                }
+
+            </tbody>
+        }
+
+    </table>
+
+
+
+
+</div>

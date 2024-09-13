@@ -1,0 +1,81 @@
+
+<div class="container">
+    <div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <img src="assets/loaderImage.gif" alt="loading" />
+    </div>
+    <h1 class="text-center my-4">AllContactsByStateId</h1>
+    <br>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label" for="countryId"><i class="fa fa-globe"></i> Country</label>
+            <select id="countryId" name="countryId" class="form-select" [(ngModel)]="countryId" (change)="loadStateDetails(countryId)" required>
+                <option value=0 disabled>--Select Country--</option>
+                <option *ngFor="let country of countries" [value]="country.countryId">{{country.countryName}}</option>
+            </select>
+            <div *ngIf="(countryId === 0 || countryId == null )" class="text-danger">
+                <small>Country is required.</small>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label" for="stateId"><i class="fa fa-map-marker"></i> State</label>
+            <select id="stateId" name="stateId" class="form-select" [(ngModel)]="stateId" (change)="loadContactByStateId(stateId)" required>
+                <option value=0 disabled>--Select State--</option>
+                <option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</option>
+            </select>
+            <div *ngIf="(stateId === 0 || stateId == null )" class="text-danger">
+                <small>State is required.</small>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Table -->
+     <div *ngIf="loadContactByStateId.length > 0; else noData">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th >Favourite</th>
+                    <th >Image</th>
+                    <th >First Name </th>
+                    <th >Last Name</th>
+                    <th >Contact Number</th>
+                    <th>Country</th>
+                    <th>State</th>
+
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr *ngFor="let contact of contactbystate" >
+                    <td >
+                        <img *ngIf="contact.isFavourite" src="assets/fullstar.png" alt="star img" width="30" height="30">
+                        <img *ngIf="!contact.isFavourite" src="assets/unstar.png" alt="star img" width="30" height="30">
+    
+                    </td>
+                    <td >
+                        <img *ngIf="contact.image" [src]="'data:image/jpeg;base64,' + contact.image" alt="img" width="60" height="60" class="rounded-circle">
+                        <img *ngIf="!contact.image" src="assets/defaultImg.jpg" alt="Category img" width="60" height="60" class="rounded-circle">
+                    </td>
+                    <td >{{contact.firstName}}</td>
+                    <td >{{contact.lastName}}</td>
+                    <td >{{contact.contactNumber}}</td>
+                    <td>{{contact.countryName}}</td>
+                    <td>{{contact.stateName}}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+
+
+
+    <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="rounded-corner no-data">
+      <p>No data available for the selected month and year.</p>
+    </div>
+  </ng-template>
+
+
+</div>

@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active">
+            <i class="fa-solid fa-phone"></i>ontactHub
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/privacy']" routerLinkActive="router-link-active">Privacy</a>
+                </li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="router-link-active">Contacts</a>
+                </li>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Reports
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                       
+                        <li class="nav-item">
+                            <a class="dropdown-item" [routerLink]="['/conatctsbycountry']" routerLinkActive="router-link-active">Country Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" [routerLink]="['/conatctsbygender']" routerLinkActive="router-link-active">Gender Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" [routerLink]="['/conatctsbystate']" routerLinkActive="router-link-active">State Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" [routerLink]="['/conatctsbymonth']" routerLinkActive="router-link-active">Month Report</a>
+                        </li>
+                    </ul>
+                </div>
+                
+            </ul>
+            <!-- Authentication -->
+            <div *ngIf="!isAuthenticated">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-secondary" [routerLink]="['/signup']" routerLinkActive="router-link-active">
+                            <span class="fas fa-user"> Sign Up</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" [routerLink]="['/signin']" routerLinkActive="router-link-active">
+                            <span class="fas fa-sign-in-alt"> Sign In</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="isAuthenticated">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/userdetails/',username]" routerLinkActive="router-link-active">
+                            <span class="fas fa-user"> {{username}}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger" (click)="signOut()" style="cursor: pointer;" [routerLink]="['/home']" routerLinkActive="router-link-active">
+                            <span class="fas fa-sign-in-alt"> SignOut</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
