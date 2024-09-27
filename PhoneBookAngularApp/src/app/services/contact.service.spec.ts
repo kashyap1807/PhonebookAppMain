@@ -13,43 +13,46 @@ import { Country } from '../models/country.model';
 describe('ContactService', () => {
   let service: ContactService;
   let httpMock :HttpTestingController;
-  const mockApiResponse : ApiResponse<Contact[]>={
-    success:true,
-    data:[
-      {contactId: 1,
+  const mockApiResponse: ApiResponse<Contact[]> = {
+    success: true,
+    data: [
+      {
+        contactId: 1,
         firstName: 'Test1',
         lastName: 'TestLast1',
         company: 'Company1',
         email: 'test1@user.com',
         contactNumber: '1234567890',
         fileName: 'SampleImg.png',
-        imageBytes:'SampleImg.png',
+        imageBytes: 'SampleImg.png',
         gender: 'm',
         stateId: 1,
         countryId: 1,
         isFavourite: true,
-        country: {countryId:1,countryName:'country1'},
-        state: { stateId:1,stateName:'state1',countryId:1}
+        birthDate: undefined,
+        country: { countryId: 1, countryName: 'country1' },
+        state: { stateId: 1, stateName: 'state1', countryId: 1 },
       },
-      {contactId: 2,
+      {
+        contactId: 2,
         firstName: 'Test2',
         lastName: 'TestLast2',
         company: 'Company2',
         email: 'test2@user.com',
         contactNumber: '0987654321',
         fileName: 'SampleImg.png',
-        imageBytes:'SampleImg.png',
+        imageBytes: 'SampleImg.png',
         gender: 'm',
         stateId: 2,
         countryId: 2,
         isFavourite: true,
-        country: {countryId:2,countryName:'country2'},
-        state: { stateId:2,stateName:'state2',countryId:2}
+        birthDate: undefined,
+        country: { countryId: 2, countryName: 'country2' },
+        state: { stateId: 2, stateName: 'state2', countryId: 2 },
       },
     ],
-    message:''
-
-  }
+    message: '',
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -154,18 +157,19 @@ describe('ContactService', () => {
   //Add Contact Service Unit Tests
   it('should add contact successfully',()=>{
     //Arrange
-    const addContact : AddContact={
-      firstName:'NewFirstName',
-      lastName:'NewLastName',
-      email:'newuser@gmail.com',
-      company:'NewCompany',
-      contactNumber:'1234567890',
-      image:'newfile.png',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
-    }
+    const addContact: AddContact = {
+      firstName: 'NewFirstName',
+      lastName: 'NewLastName',
+      email: 'newuser@gmail.com',
+      company: 'NewCompany',
+      contactNumber: '1234567890',
+      image: 'newfile.png',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      birthDate: undefined,
+      isFavourite: true,
+    };
 
     const formData = new FormData();
     formData.append('firstName','NewFirstName');
@@ -200,18 +204,19 @@ describe('ContactService', () => {
 
   it('should handle failed contact addition',()=>{
     //Arrange
-    const addContact : AddContact={
-      firstName:'New FirstName',
-      lastName:'New LastName',
-      email:'newuser@gmail.com',
-      company:'New Company',
-      contactNumber:'1234567890',
-      image:'newfile',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
-    }
+    const addContact: AddContact = {
+      firstName: 'New FirstName',
+      lastName: 'New LastName',
+      email: 'newuser@gmail.com',
+      company: 'New Company',
+      contactNumber: '1234567890',
+      image: 'newfile',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      isFavourite: true,
+      birthDate: undefined,
+    };
 
     const formData = new FormData();
     formData.append('firstName','NewFirstName');
@@ -244,17 +249,18 @@ describe('ContactService', () => {
 
   it('should handle http error of add',()=>{
     //Arrange
-    const addContact : AddContact={
-      firstName:'New FirstName',
-      lastName:'New LastName',
-      email:'newuser@gmail.com',
-      company:'New Company',
-      contactNumber:'1234567890',
-      image:'SampleImg.png',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
+    const addContact: AddContact = {
+      firstName: 'New FirstName',
+      lastName: 'New LastName',
+      email: 'newuser@gmail.com',
+      company: 'New Company',
+      contactNumber: '1234567890',
+      image: 'SampleImg.png',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      isFavourite: true,
+      birthDate: undefined,
     };
     const formData = new FormData();
     formData.append('firstName','NewFirstName');
@@ -290,18 +296,19 @@ describe('ContactService', () => {
   //Update Contact Unit Tests
   it('should update a contact successfully',()=>{
     //Arrange
-    const updateContact: UpdateContact={
-      contactId:1,
-      firstName:'Update FirstName',
-      lastName:'Update LastName',
-      email:'newuser@gmail.com',
-      company:'Update Company',
-      contactNumber:'1234567890',
-      image:'UpdateFile',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
+    const updateContact: UpdateContact = {
+      contactId: 1,
+      firstName: 'Update FirstName',
+      lastName: 'Update LastName',
+      email: 'newuser@gmail.com',
+      company: 'Update Company',
+      contactNumber: '1234567890',
+      image: 'UpdateFile',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      isFavourite: true,
+      birthDate: undefined,
     };
     const formData = new FormData();
     formData.append('contactId','1'.toString());
@@ -336,18 +343,19 @@ describe('ContactService', () => {
 
   it('should update a contact failed',()=>{
     //Arrange
-    const updateContact: UpdateContact={
-      contactId:1,
-      firstName:'Update FirstName',
-      lastName:'Update LastName',
-      email:'newuser@gmail.com',
-      company:'Update Company',
-      contactNumber:'1234567890',
-      image:'UpdateFile',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
+    const updateContact: UpdateContact = {
+      contactId: 1,
+      firstName: 'Update FirstName',
+      lastName: 'Update LastName',
+      email: 'newuser@gmail.com',
+      company: 'Update Company',
+      contactNumber: '1234567890',
+      image: 'UpdateFile',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      isFavourite: true,
+      birthDate: undefined,
     };
     const formData = new FormData();
     formData.append('contactId','1'.toString());
@@ -382,18 +390,19 @@ describe('ContactService', () => {
 
   it('should handle http error of update',()=>{
     //Arrange
-    const updateContact: UpdateContact={
-      contactId:1,
-      firstName:'Update FirstName',
-      lastName:'Update LastName',
-      email:'newuser@gmail.com',
-      company:'Update Company',
-      contactNumber:'1234567890',
-      image:'UpdateFile',
-      countryId:1,
-      stateId:1,
-      gender:'male',
-      isFavourite:true,
+    const updateContact: UpdateContact = {
+      contactId: 1,
+      firstName: 'Update FirstName',
+      lastName: 'Update LastName',
+      email: 'newuser@gmail.com',
+      company: 'Update Company',
+      contactNumber: '1234567890',
+      image: 'UpdateFile',
+      countryId: 1,
+      stateId: 1,
+      gender: 'male',
+      isFavourite: true,
+      birthDate: undefined,
     };
     const formData = new FormData();
     formData.append('contactId','1'.toString());
@@ -431,25 +440,26 @@ describe('ContactService', () => {
   it('should fetch a contact by id successfully',()=>{
     //Arrange
     const contactId = 1;
-    const mockSuccessResponse : ApiResponse<Contact>={
-      success:true,
-      data:{
-        contactId:1,
-        firstName:'Update FirstName',
-        lastName:'Update LastName',
-        email:'newuser@gmail.com',
-        company:'Update Company',
-        contactNumber:'1234567890',
-        fileName:'UpdateFile',
-        imageBytes:'SampleImg.png',
-        countryId:1,
-        stateId:1,
-        gender:'male',
-        isFavourite:true,
-        country : {} as Country,
+    const mockSuccessResponse: ApiResponse<Contact> = {
+      success: true,
+      data: {
+        contactId: 1,
+        firstName: 'Update FirstName',
+        lastName: 'Update LastName',
+        email: 'newuser@gmail.com',
+        company: 'Update Company',
+        contactNumber: '1234567890',
+        fileName: 'UpdateFile',
+        imageBytes: 'SampleImg.png',
+        countryId: 1,
+        stateId: 1,
+        gender: 'male',
+        isFavourite: true,
+        birthDate: undefined,
+        country: {} as Country,
         state: {} as State,
       },
-      message : ''
+      message: '',
     };
     //Act
     service.getContactById(contactId).subscribe(response=>{
