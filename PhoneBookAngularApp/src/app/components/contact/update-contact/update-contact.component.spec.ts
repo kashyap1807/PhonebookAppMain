@@ -29,14 +29,15 @@ describe('UpdateContactComponent', () => {
     stateId: 0,
     gender: '',
     isFavourite: true,
+    birthDate: undefined,
     country: {
       countryId: 0,
-      countryName: ''
+      countryName: '',
     },
     state: {
       stateId: 0,
       stateName: '',
-      countryId: 0
+      countryId: 0,
     },
   };
   beforeEach(() => {

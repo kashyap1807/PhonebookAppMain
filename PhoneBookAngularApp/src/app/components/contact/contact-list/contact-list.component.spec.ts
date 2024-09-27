@@ -51,15 +51,16 @@ describe('ContactListComponent', () => {
         stateId: 0,
         gender: 'Male',
         isFavourite: true,
+        birthDate: undefined,
         country: {
           countryId: 0,
-          countryName: 'CountryName'
+          countryName: 'CountryName',
         },
         state: {
           stateId: 0,
           stateName: 'StateName',
-          countryId: 0
-        }
+          countryId: 0,
+        },
       },
     ];
     const mockApiResponse: ApiResponse<Contact[]> = {
@@ -130,15 +131,16 @@ describe('ContactListComponent', () => {
         stateId: 0,
         gender: 'Male',
         isFavourite: true,
+        birthDate: undefined,
         country: {
           countryId: 0,
-          countryName: 'CountryName'
+          countryName: 'CountryName',
         },
         state: {
           stateId: 0,
           stateName: 'StateName',
-          countryId: 0
-        }
+          countryId: 0,
+        },
       },
     ];
     const mockApiResponse: ApiResponse<Contact[]> = {
@@ -170,15 +172,16 @@ describe('ContactListComponent', () => {
         stateId: 0,
         gender: 'Male',
         isFavourite: true,
+        birthDate: undefined,
         country: {
           countryId: 0,
-          countryName: 'CountryName'
+          countryName: 'CountryName',
         },
         state: {
           stateId: 0,
           stateName: 'StateName',
-          countryId: 0
-        }
+          countryId: 0,
+        },
       },
     ];
     const mockApiResponse: ApiResponse<Contact[]> = {
@@ -211,15 +214,16 @@ describe('ContactListComponent', () => {
         stateId: 0,
         gender: 'Male',
         isFavourite: true,
+        birthDate: undefined,
         country: {
           countryId: 0,
-          countryName: 'CountryName'
+          countryName: 'CountryName',
         },
         state: {
           stateId: 0,
           stateName: 'StateName',
-          countryId: 0
-        }
+          countryId: 0,
+        },
       },
     ];
     const mockApiResponse: ApiResponse<Contact[]> = {

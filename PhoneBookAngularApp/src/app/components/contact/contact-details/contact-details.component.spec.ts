@@ -27,14 +27,15 @@ describe('ContactDetailsComponent', () => {
     stateId: 1,
     gender: 'Male',
     isFavourite: true,
+    birthDate: undefined,
     country: {
       countryId: 1,
-      countryName: 'Country'
+      countryName: 'Country',
     },
     state: {
       stateId: 1,
       stateName: 'State',
-      countryId: 1
+      countryId: 1,
     },
   };
 
